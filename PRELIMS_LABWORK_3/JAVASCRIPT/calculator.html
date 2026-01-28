@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prelim Grade Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .calculator {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            color: #666;
+        }
+
+        .result-value {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .required-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f4fd;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .required-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .required-item {
+            margin-bottom: 10px;
+        }
+
+        .required-item .label {
+            color: #555;
+            font-size: 14px;
+        }
+
+        .required-item .value {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .value.pass {
+            color: #28a745;
+        }
+
+        .value.fail {
+            color: #dc3545;
+        }
+
+        .value.normal {
+            color: #007bff;
+        }
+
+        .value.warning {
+            color: #fd7e14;
+        }
+
+        .error {
+            color: #dc3545;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>📚 Prelim Grade Calculator</h1>
+        
+        <div class="input-group">
+            <label for="lab1">Lab Work Grade 1:</label>
+            <input type="number" id="lab1" placeholder="Enter grade (0-100)" min="0" max="100">
+        </div>
+        
+        <div class="input-group">
+            <label for="lab2">Lab Work Grade 2:</label>
+            <input type="number" id="lab2" placeholder="Enter grade (0-100)" min="0" max="100">
+        </div>
+        
+        <div class="input-group">
+            <label for="lab3">Lab Work Grade 3:</label>
+            <input type="number" id="lab3" placeholder="Enter grade (0-100)" min="0" max="100">
+        </div>
+        
+        <div class="input-group">
+            <label for="absents">Number of Absents:</label>
+            <input type="number" id="absents" placeholder="Enter number of absents" min="0">
+        </div>
+        
+        <button onclick="calculateGrade()">Calculate Grade</button>
+        
+        <div id="error" class="error"></div>
+        
+        <div id="results" class="results">
+            <div class="result-item">
+                <span class="result-label">Attendance Score:</span>
+                <span id="attendanceScore" class="result-value"></span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Lab Work Average:</span>
+                <span id="labAverage" class="result-value"></span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Class Standing:</span>
+                <span id="classStanding" class="result-value"></span>
+            </div>
+            
+            <div class="required-section">
+                <h3>📝 Required Prelim Exam Scores</h3>
+                
+                <div class="required-item">
+                    <div class="label">To Pass (75):</div>
+                    <div id="requiredToPass" class="value"></div>
+                </div>
+                
+                <div class="required-item">
+                    <div class="label">For Perfect (100):</div>
+                    <div id="requiredFor100" class="value"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateGrade() {
+            // Get input values
+            const lab1 = parseFloat(document.getElementById('lab1').value);
+            const lab2 = parseFloat(document.getElementById('lab2').value);
+            const lab3 = parseFloat(document.getElementById('lab3').value);
+            const absents = parseInt(document.getElementById('absents').value);
+            
+            const errorDiv = document.getElementById('error');
+            const resultsDiv = document.getElementById('results');
+            
+            // Validate inputs
+            if (isNaN(lab1) || isNaN(lab2) || isNaN(lab3) || isNaN(absents)) {
+                errorDiv.textContent = 'Please enter valid numbers in all fields!';
+                resultsDiv.classList.remove('show');
+                return;
+            }
+            
+            errorDiv.textContent = '';
+            
+            // Calculate Attendance (100 base score, -10 per absent)
+            let attendance = 100 - (absents * 10);
+            if (attendance < 0) attendance = 0;
+            
+            // Calculate Lab Work Average
+            const labWorkAverage = (lab1 + lab2 + lab3) / 3;
+            
+            // Calculate Class Standing
+            // Class Standing = (Attendance x 0.40) + (Lab Work Average x 0.60)
+            const classStanding = (attendance * 0.40) + (labWorkAverage * 0.60);
+            
+            // Calculate required Prelim Exam score to pass (75) and get 100
+            // Prelim Grade = (Prelim Exam x 0.30) + (Class Standing x 0.70)
+            // Prelim Exam = (Target Grade - Class Standing x 0.70) / 0.30
+            const requiredToPass = (75 - (classStanding * 0.70)) / 0.30;
+            const requiredFor100 = (100 - (classStanding * 0.70)) / 0.30;
+            
+            // Calculate max possible grade
+            const maxPossibleGrade = (100 * 0.30) + (classStanding * 0.70);
+            
+            // Display results
+            document.getElementById('attendanceScore').textContent = attendance.toFixed(2);
+            document.getElementById('labAverage').textContent = labWorkAverage.toFixed(2);
+            document.getElementById('classStanding').textContent = classStanding.toFixed(2);
+            
+            // Display required to pass
+            const passElement = document.getElementById('requiredToPass');
+            if (requiredToPass > 100) {
+                passElement.textContent = `Cannot pass (need ${requiredToPass.toFixed(2)})`;
+                passElement.className = 'value fail';
+            } else if (requiredToPass <= 0) {
+                passElement.textContent = 'ALREADY PASSING! (need 0 or less)';
+                passElement.className = 'value pass';
+            } else {
+                passElement.textContent = requiredToPass.toFixed(2);
+                passElement.className = 'value normal';
+            }
+            
+            // Display required for 100
+            const perfectElement = document.getElementById('requiredFor100');
+            if (requiredFor100 > 100) {
+                perfectElement.textContent = `Need ${requiredFor100.toFixed(2)} (Max grade: ${maxPossibleGrade.toFixed(2)})`;
+                perfectElement.className = 'value warning';
+            } else if (requiredFor100 <= 0) {
+                perfectElement.textContent = `GUARANTEED! (Max grade: ${maxPossibleGrade.toFixed(2)})`;
+                perfectElement.className = 'value pass';
+            } else {
+                perfectElement.textContent = `${requiredFor100.toFixed(2)} (Max grade: ${maxPossibleGrade.toFixed(2)})`;
+                perfectElement.className = 'value normal';
+            }
+            
+            resultsDiv.classList.add('show');
+        }
+        
+        // Allow Enter key to calculate
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateGrade();
+            }
+        });
+    </script>
+</body>
+</html>
