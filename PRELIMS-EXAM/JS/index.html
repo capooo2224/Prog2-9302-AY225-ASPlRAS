@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(25-0430-348_WEIAM_ASPIRAS) STUDENT RECORD SYSTEM - Web</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <script src="scripts/app.js"></script>
+</head>
+<body>
+    <h1>Student Record System</h1>
+    
+    <div class="input-form">
+        <input type="text" id="idInput" placeholder="Student ID">
+        <input type="text" id="nameInput" placeholder="Name">
+        <input type="text" id="gradeInput" placeholder="Grade">
+        <button onclick="createRecord()">Add Student</button>
+    </div>
+
+    <table id="studentTable">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Prelims Grade</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+    </table>
+
+    <footer>
+        <!-- Weiam Aspiras 25-0430-348 -->
+        &copy; 2026 Student Record System - Weiam Aspiras 25-0430-348
+    </footer>
+</body>
+</html>
